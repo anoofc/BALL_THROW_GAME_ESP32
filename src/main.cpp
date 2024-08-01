@@ -4,12 +4,12 @@
 #define BAUDRATE 9600
 
 // Define the score for each sensor
-#define SENSOR_1_SCORE 10
-#define SENSOR_2_SCORE 20
-#define SENSOR_3_SCORE 30
-#define SENSOR_4_SCORE 40
-#define SENSOR_5_SCORE 50
-#define SENSOR_6_SCORE 60
+#define SENSOR_1_SCORE 5
+#define SENSOR_2_SCORE 10
+#define SENSOR_3_SCORE 15
+#define SENSOR_4_SCORE 20
+#define SENSOR_5_SCORE 25
+#define SENSOR_6_SCORE 30
 
 // Define the pins for the sensors and the switch
 #define SENSOR_1 34

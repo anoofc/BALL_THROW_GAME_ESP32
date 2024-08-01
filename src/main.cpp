@@ -1,7 +1,7 @@
 #define DEBUG 0
 
 #define BAUDRATE 9600
-
+// Define the score for each sensor
 #define SENSOR_1_SCORE 10
 #define SENSOR_2_SCORE 20
 #define SENSOR_3_SCORE 30
@@ -9,7 +9,7 @@
 #define SENSOR_5_SCORE 50
 #define SENSOR_6_SCORE 60
 
-
+// Define the pins for the sensors and the switch
 #define SENSOR_1 34
 #define SENSOR_2 35
 #define SENSOR_3 32
@@ -21,6 +21,8 @@
 
 #include <Arduino.h>
 
+// Global variables to store the state of the sensors
+
 bool sensor1Triggered = false;
 bool sensor2Triggered = false;
 bool sensor3Triggered = false;
@@ -28,19 +30,26 @@ bool sensor4Triggered = false;
 bool sensor5Triggered = false;
 bool sensor6Triggered = false;
 
-
+// Global variables to store the state of the game
 bool gameStarted = false;
+// Global variable to store the score
 uint16_t score = 0;
 
+// Global variables for the switch debounce
+unsigned long debounceDelay = 1000; // debounce delay in milliseconds
+unsigned long lastSwitchTime = 0; // variable to store the last switch time
+
+
+// Function to handle the game logic
 
 void gameRunning (){
-
+    // Check if the sensor is triggered and add the score to the total score
     if (digitalRead(SENSOR_1) == LOW && !sensor1Triggered) {
         score = score + SENSOR_1_SCORE;
         Serial.println(score);
         if (DEBUG) { Serial.println("Sensor 1");}
         sensor1Triggered = true;
-    } else if (digitalRead(SENSOR_1) == HIGH && sensor1Triggered) {
+    } else if (digitalRead(SENSOR_1) == HIGH && sensor1Triggered) { // Reset the sensor state
         sensor1Triggered = false;
     }
 
@@ -91,6 +100,7 @@ void gameRunning (){
 
 }
 
+// Function to reset the game
 void gameReset() {
     gameStarted = false;
     Serial.println(score);
@@ -98,32 +108,32 @@ void gameReset() {
     if (DEBUG) { Serial.println("GAME RESET");}
 }
 
-unsigned long debounceDelay = 1000; // debounce delay in milliseconds
-unsigned long lastSwitchTime = 0; // variable to store the last switch time
-
+// Function to start and stop the game.
 void gameHandler() {
     if (gameStarted) {
         gameRunning();
     }
 
-    if (digitalRead(SWITCH_PIN) == LOW && (millis() - lastSwitchTime) > debounceDelay) {
+    if (digitalRead(SWITCH_PIN) == LOW && (millis() - lastSwitchTime) > debounceDelay) { // check if the Reset switch is pressed
         gameReset();
         lastSwitchTime = millis(); // update the last switch time
     }
 }
-
+// Function to read the serial input
 void readSerial() {
     if (Serial.available() > 0) {
         String data = Serial.readString();
-        data.trim();
+        data.trim(); 
         if (DEBUG) { Serial.println(data); }
-        if (data == "S") { gameStarted = true; if (DEBUG) { Serial.println("GAME STARTED");} }
-        if (data == "Z") { gameReset();} 
+        if (data == "S") { gameStarted = true; if (DEBUG) { Serial.println("GAME STARTED");} } // Start the game
+        if (data == "Z") { gameReset();}    // Reset the game
     }
 }
 
 void setup() {
-    Serial.begin(BAUDRATE);
+
+    Serial.begin(BAUDRATE); // Start the serial communication
+    // Set the pins for the sensors and the switch
     pinMode(SENSOR_1, INPUT_PULLUP);
     pinMode(SENSOR_2, INPUT_PULLUP);
     pinMode(SENSOR_3, INPUT_PULLUP);
@@ -138,6 +148,7 @@ void setup() {
 }
 
 void loop() {
+    // Call the functions to read the serial input and handle the game logic
     readSerial();
     gameHandler();
 }

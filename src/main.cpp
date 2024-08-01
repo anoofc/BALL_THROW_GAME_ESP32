@@ -1,5 +1,5 @@
 #define DEBUG 0
-
+// Define the baudrate for the serial communication
 #define BAUDRATE 9600
 // Define the score for each sensor
 #define SENSOR_1_SCORE 10

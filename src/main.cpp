@@ -3,6 +3,8 @@
 // Define the baudrate for the serial communication
 #define BAUDRATE 9600
 
+#define DEBUG_SERIAL Serial
+#define PC_SERIAL Serial2
 // Define the score for each sensor
 #define SENSOR_1_SCORE 5
 #define SENSOR_2_SCORE 10
@@ -47,8 +49,9 @@ void gameRunning (){
     // Check if the sensor is triggered and add the score to the total score
     if (digitalRead(SENSOR_1) == LOW && !sensor1Triggered) {
         score = score + SENSOR_1_SCORE;
-        Serial.println(score);
-        if (DEBUG) { Serial.println("Sensor 1");}
+        if (DEBUG) {DEBUG_SERIAL.println(score);}
+        PC_SERIAL.println(score);
+        if (DEBUG) { DEBUG_SERIAL.println("Sensor 1");}
         sensor1Triggered = true;
     } else if (digitalRead(SENSOR_1) == HIGH && sensor1Triggered) { // Reset the sensor state
         sensor1Triggered = false;
@@ -56,8 +59,9 @@ void gameRunning (){
 
     if (digitalRead(SENSOR_2) == LOW && !sensor2Triggered) {
         score = score + SENSOR_2_SCORE;
-        Serial.println(score);
-        if (DEBUG) { Serial.println("Sensor 2");}
+        if (DEBUG) {DEBUG_SERIAL.println(score);}
+        PC_SERIAL.println(score);
+        if (DEBUG) { DEBUG_SERIAL.println("Sensor 2");}
         sensor2Triggered = true;
     } else if (digitalRead(SENSOR_2) == HIGH && sensor2Triggered) {
         sensor2Triggered = false;
@@ -65,8 +69,9 @@ void gameRunning (){
 
     if (digitalRead(SENSOR_3) == LOW && !sensor3Triggered) {
         score = score + SENSOR_3_SCORE;
-        Serial.println(score);
-        if (DEBUG) { Serial.println("Sensor 3");}
+        if (DEBUG) {DEBUG_SERIAL.println(score);}
+        PC_SERIAL.println(score);
+        if (DEBUG) { DEBUG_SERIAL.println("Sensor 3");}
         sensor3Triggered = true;
     } else if (digitalRead(SENSOR_3) == HIGH && sensor3Triggered) {
         sensor3Triggered = false;
@@ -74,8 +79,9 @@ void gameRunning (){
 
     if (digitalRead(SENSOR_4) == LOW && !sensor4Triggered) {
         score = score + SENSOR_4_SCORE;
-        Serial.println(score);
-        if (DEBUG) { Serial.println("Sensor 4");}
+        if (DEBUG) {DEBUG_SERIAL.println(score);}
+        PC_SERIAL.println(score);
+        if (DEBUG) { DEBUG_SERIAL.println("Sensor 4");}
         sensor4Triggered = true;
     } else if (digitalRead(SENSOR_4) == HIGH && sensor4Triggered) {
         sensor4Triggered = false;
@@ -83,8 +89,9 @@ void gameRunning (){
 
     if (digitalRead(SENSOR_5) == LOW && !sensor5Triggered) {
         score = score + SENSOR_5_SCORE;
-        Serial.println(score);
-        if (DEBUG) { Serial.println("Sensor 5");}
+        if (DEBUG) {DEBUG_SERIAL.println(score);}
+        PC_SERIAL.println(score);
+        if (DEBUG) { DEBUG_SERIAL.println("Sensor 5");}
         sensor5Triggered = true;
     } else if (digitalRead(SENSOR_5) == HIGH && sensor5Triggered) {
         sensor5Triggered = false;
@@ -92,8 +99,9 @@ void gameRunning (){
 
     if (digitalRead(SENSOR_6) == LOW && !sensor6Triggered) {
         score = score + SENSOR_6_SCORE;
-        Serial.println(score);
-        if (DEBUG) { Serial.println("Sensor 6");}
+        if (DEBUG) {DEBUG_SERIAL.println(score);}
+        PC_SERIAL.println(score);
+        if (DEBUG) { DEBUG_SERIAL.println("Sensor 6");}
         sensor6Triggered = true;
     } else if (digitalRead(SENSOR_6) == HIGH && sensor6Triggered) {
         sensor6Triggered = false;
@@ -103,9 +111,10 @@ void gameRunning (){
 // Function to reset the game
 void gameReset() {
     gameStarted = false;
-    Serial.println(score);
+    DEBUG_SERIAL.println(score);
+    PC_SERIAL.println(score);
     score = 0;
-    if (DEBUG) { Serial.println("GAME RESET");}
+    if (DEBUG) { DEBUG_SERIAL.println("GAME RESET");}
 }
 
 // Function to start and stop the game.
@@ -121,11 +130,11 @@ void gameHandler() {
 }
 // Function to read the serial input
 void readSerial() {
-    if (Serial.available() > 0) {
-        String data = Serial.readString();
+    if (PC_SERIAL.available() > 0) {
+        String data = PC_SERIAL.readString();
         data.trim(); 
-        if (DEBUG) { Serial.println(data); }
-        if (data == "S") { gameStarted = true; if (DEBUG) { Serial.println("GAME STARTED");} } // Start the game
+        if (DEBUG) { DEBUG_SERIAL.println(data); }
+        if (data == "S") { gameStarted = true; if (DEBUG) { DEBUG_SERIAL.println("GAME STARTED");} } // Start the game
         if (data == "Z") { gameReset();}    // Reset the game
     }
 }
@@ -142,7 +151,7 @@ void setup() {
 
     pinMode(SWITCH_PIN, INPUT_PULLUP); // Set the switch pin as input
 
-    if (DEBUG) { Serial.println("ENTER 'S' TO START!!");} // Print the message to start the game
+    if (DEBUG) { DEBUG_SERIAL.println("ENTER 'S' TO START!!");} // Print the message to start the game
 }
 
 void loop() {

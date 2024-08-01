@@ -1,6 +1,8 @@
 #define DEBUG 0
+
 // Define the baudrate for the serial communication
 #define BAUDRATE 9600
+
 // Define the score for each sensor
 #define SENSOR_1_SCORE 10
 #define SENSOR_2_SCORE 20
@@ -19,6 +21,7 @@
 
 #define SWITCH_PIN 27
 
+// Include the Arduino library
 #include <Arduino.h>
 
 // Global variables to store the state of the sensors
@@ -39,9 +42,7 @@ uint16_t score = 0;
 unsigned long debounceDelay = 1000; // debounce delay in milliseconds
 unsigned long lastSwitchTime = 0; // variable to store the last switch time
 
-
 // Function to handle the game logic
-
 void gameRunning (){
     // Check if the sensor is triggered and add the score to the total score
     if (digitalRead(SENSOR_1) == LOW && !sensor1Triggered) {
@@ -97,7 +98,6 @@ void gameRunning (){
     } else if (digitalRead(SENSOR_6) == HIGH && sensor6Triggered) {
         sensor6Triggered = false;
     }
-
 }
 
 // Function to reset the game
@@ -131,7 +131,6 @@ void readSerial() {
 }
 
 void setup() {
-
     Serial.begin(BAUDRATE); // Start the serial communication
     // Set the pins for the sensors and the switch
     pinMode(SENSOR_1, INPUT_PULLUP);
@@ -141,10 +140,9 @@ void setup() {
     pinMode(SENSOR_5, INPUT_PULLUP);
     pinMode(SENSOR_6, INPUT_PULLUP);
 
-    pinMode(SWITCH_PIN, INPUT_PULLUP);
+    pinMode(SWITCH_PIN, INPUT_PULLUP); // Set the switch pin as input
 
-    if (DEBUG) { Serial.println("ENTER 'S' TO START!!");}
-    
+    if (DEBUG) { Serial.println("ENTER 'S' TO START!!");} // Print the message to start the game
 }
 
 void loop() {
@@ -152,4 +150,3 @@ void loop() {
     readSerial();
     gameHandler();
 }
-

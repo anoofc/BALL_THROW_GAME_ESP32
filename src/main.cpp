@@ -179,7 +179,7 @@ void gameReset() {
 // Function to start and stop the game.
 void gameHandler() {
     if (gameStarted) {
-        gameRunning();
+        gameRunning();  // Call the gameRunning function
     }
 
     if (digitalRead(SWITCH_PIN) == LOW && (millis() - lastSwitchTime) > debounceDelay) { // check if the Reset switch is pressed
